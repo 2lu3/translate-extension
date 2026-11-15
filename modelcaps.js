@@ -22,7 +22,7 @@ const DEFAULTS = Object.freeze({
     showProgressPopup: true,
     hidePromptAllSites: true,
     showContextMenu: true,
-    autoRetranslateDomain: true,
+    autoRetranslateDomain: false,
     autoTranslateNewContent: true,
     streamingTranslation: true
 });

@@ -31,7 +31,7 @@ function adoptSettingSnapshot(items) {
     currentExcludeList = Array.isArray(items.excludeList) ? items.excludeList : [];
     currentRealTimeTranslation = items.realTimeTranslation === true;
     currentAlwaysTranslateList = Array.isArray(items.alwaysTranslateList) ? items.alwaysTranslateList : [];
-    currentAutoRetranslateDomain = items.autoRetranslateDomain !== false;
+    currentAutoRetranslateDomain = items.autoRetranslateDomain === true;
 }
 
 function watchSettingChanges() {
@@ -44,7 +44,7 @@ function watchSettingChanges() {
         if (changes.excludeList) currentExcludeList = Array.isArray(changes.excludeList.newValue) ? changes.excludeList.newValue : [];
         if (changes.realTimeTranslation) currentRealTimeTranslation = changes.realTimeTranslation.newValue === true;
         if (changes.alwaysTranslateList) currentAlwaysTranslateList = Array.isArray(changes.alwaysTranslateList.newValue) ? changes.alwaysTranslateList.newValue : [];
-        if (changes.autoRetranslateDomain) currentAutoRetranslateDomain = changes.autoRetranslateDomain.newValue !== false;
+        if (changes.autoRetranslateDomain) currentAutoRetranslateDomain = changes.autoRetranslateDomain.newValue === true;
     });
 }
 

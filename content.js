@@ -33,7 +33,7 @@ function initTranslation() {
                     const restored = await tryRestoreFromCache(target.cacheKey);
                     const optedIntoAutoTranslation = (restored || cacheRestoreActive) && (items.realTimeTranslation === true
                         || isAlwaysTranslate
-                        || (items.autoRetranslateDomain !== false && (await getSessionDomainState()).known));
+                        || (items.autoRetranslateDomain === true && (await getSessionDomainState()).known));
                     if (optedIntoAutoTranslation && isAutomaticPageTranslationAllowed()) {
                         let restoredBlocks = 0;
                         try { restoredBlocks = applyCacheRestore(); } catch (e) { }
@@ -63,7 +63,7 @@ function initTranslation() {
                     startTranslation();
                 };
 
-                const autoRetranslateEnabled = items.autoRetranslateDomain !== false;
+                const autoRetranslateEnabled = items.autoRetranslateDomain === true;
 
                 const beginAutoTranslation = () => {
                     if (!isAutomaticPageTranslationAllowed() || translationCancelled || translationHasError) return;

@@ -201,7 +201,7 @@ let currentRealTimeTranslation = false;
 
 let currentAlwaysTranslateList = [];
 
-let currentAutoRetranslateDomain = true;
+let currentAutoRetranslateDomain = false;
 
 let currentSessionDomainKnown = false;
 
