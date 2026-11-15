@@ -93,7 +93,7 @@ async function processFrame(entry) {
         chrome.storage.local.get(['concurrencyLimit', 'delayBetweenRequests', 'streamingTranslation'], resolve));
     const concLimit = Math.max(1, concurrencyLimit || DEFAULTS.concurrencyLimit);
     const delayMs = Math.max(0, delayBetweenRequests ?? DEFAULTS.delayBetweenRequests);
-    const streamingEnabled = streamingTranslation === true;
+    const streamingEnabled = streamingTranslation !== false;
 
     if (!batches || batches.length === 0) return;
 

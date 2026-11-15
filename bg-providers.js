@@ -280,9 +280,9 @@ async function loadConfiguredProvider(provider) {
     return { spec, settings };
 }
 
-async function translateWithProvider(provider, text, retryLimit, signal, targetLanguage, targetLanguageCode, streamContext = null) {
+async function translateWithProvider(provider, text, retryLimit, signal, targetLanguage, targetLanguageCode, streamContext = null, paragraphKeys = []) {
     const { spec, settings } = await loadConfiguredProvider(provider);
-    const prompt = createTranslationPrompt(text, targetLanguage, targetLanguageCode, await getPromptCustomSections());
+    const prompt = createTranslationPrompt(text, paragraphKeys);
     return requestProviderJson(spec, settings, prompt, retryLimit, signal, streamContext);
 }
 

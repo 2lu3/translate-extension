@@ -53,7 +53,7 @@ async function startTranslation(userInitiated = false) {
             try { applyCacheRestore(); } catch (e) { }
         }
         highlightTranslated = config.toggleBlueBackground === true;
-        streamingEnabled = config.streamingTranslation === true;
+        streamingEnabled = config.streamingTranslation !== false;
         useSessionMemoForLanguage(lang);
         applyStrings(target);
 
@@ -496,7 +496,7 @@ async function resendOnce(unitIds, runGeneration) {
         if (!unitAwaitingTranslation(id)) continue;
         const tu = translationUnits.get(id);
         try {
-            const translations = await processBatch([{ id: tu.id, template: tu.template }], runGeneration);
+            const translations = await processBatch([{ id: tu.id, template: tu.template, paragraph: tu.block.nodeName === 'P' }], runGeneration);
             if (translationCancelled || runGeneration !== translationRunGeneration) break;
             markMissingBatchUnitsFailed([{ id: tu.id, template: tu.template }], translations);
             domUpdateQueue.push({ generation: runGeneration, translations });
