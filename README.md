@@ -16,7 +16,7 @@ Google Gemini・OpenAI・Anthropic・DeepSeek などの AI API を使ってウ�
 
 ページ翻訳では、原文とほぼ同じ内容が伝わり、同じ理解・判断・行動につながる、分かりやすい日本語に編集するよう AI に指示します。翻訳単位ごとにリクエストを送るため、各部分で利用できる文脈には限りがあります。AI の判断によっては指示どおりにならないことがあります。翻訳済みキャッシュを復元した場合は、保存時の結果が表示されます。
 
-各翻訳単位の入力が2文以上の場合は、意味のまとまりごとに箇条書きにするよう AI に指示します。ページの要素によっては改行が表示に反映されない場合があります。
+各翻訳単位の入力が2文以上の場合は、意味のまとまりごとに要約を付け、その下に対応する翻訳を省略せずに並べるよう AI に指示します。ページの要素によっては改行が表示に反映されない場合があります。
 
 新規設定では翻訳前の確認を表示せず、新しく読み込まれた内容の翻訳とストリーミングを有効にします。新しい内容の翻訳には API の費用がかかります。各設定は変更できます。
 
@@ -100,7 +100,7 @@ Page translation instructs the AI to edit the text into clear Japanese that conv
 
 Continuing translation on other pages of the same site is off by default. When enabled, it automatically translates other pages of a translated site while a tab for that site remains open. Existing saved settings are preserved.
 
-When a translation unit contains two or more sentences, the AI is instructed to use a bulleted list grouped by meaning. Line breaks may not appear in some page elements.
+When a translation unit contains two or more sentences, the AI is instructed to group the text by meaning, with each summary followed by its complete translation. Line breaks may not appear in some page elements.
 
 ### Features
 
