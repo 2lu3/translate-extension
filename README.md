@@ -16,6 +16,8 @@ Google Gemini・OpenAI・Anthropic・DeepSeek などの AI API を使ってウ�
 
 ページ翻訳では、原文とほぼ同じ内容が伝わり、同じ理解・判断・行動につながる、分かりやすい日本語に編集するよう AI に指示します。翻訳単位ごとにリクエストを送るため、各部分で利用できる文脈には限りがあります。AI の判断によっては指示どおりにならないことがあります。翻訳済みキャッシュを復元した場合は、保存時の結果が表示されます。
 
+各翻訳単位の入力が2文以上の場合は、意味のまとまりごとに箇条書きにするよう AI に指示します。ページの要素によっては改行が表示に反映されない場合があります。
+
 新規設定では翻訳前の確認を表示せず、新しく読み込まれた内容の翻訳とストリーミングを有効にします。新しい内容の翻訳には API の費用がかかります。各設定は変更できます。
 
 ### 主な機能
@@ -93,6 +95,8 @@ Copyright (C) 2026 mame1839
 A Chrome extension that translates web pages in place using AI APIs — Google Gemini, OpenAI, Anthropic, DeepSeek, or any OpenAI-compatible endpoint. Supports 23 languages, plus any other language you enter by name, while preserving page structure, links, and formatting.
 
 Page translation instructs the AI to edit the text into clear Japanese that conveys substantially the same content and leads to the same understanding, decisions, and actions as the original. Each translation unit is sent in a separate request, so the available context is limited. The AI may not always follow these instructions. Restored cached translations retain their saved results. New installations skip the translation prompt and enable streaming and translation of newly loaded content by default; translating new content incurs API costs. These settings can be changed.
+
+When a translation unit contains two or more sentences, the AI is instructed to use a bulleted list grouped by meaning. Line breaks may not appear in some page elements.
 
 ### Features
 
