@@ -14,7 +14,7 @@
 
 Google Gemini・OpenAI・Anthropic・DeepSeek などの AI API を使ってウェブページをその場で翻訳する Chrome 拡張機能です。ページ構造やリンク・書式を保ったまま翻訳します。23 言語に対応し、一覧に無い言語も名前で指定できます。
 
-ページ翻訳では、原文とほぼ同じ内容が伝わり、同じ理解・判断・行動につながる、分かりやすい日本語に編集するよう AI に指示します。ページは分割して送信するため、各部分で利用できる文脈には限りがあります。AI の判断によっては指示どおりにならないことがあります。翻訳済みキャッシュを復元した場合は、保存時の結果が表示されます。
+ページ翻訳では、原文とほぼ同じ内容が伝わり、同じ理解・判断・行動につながる、分かりやすい日本語に編集するよう AI に指示します。翻訳単位ごとにリクエストを送るため、各部分で利用できる文脈には限りがあります。AI の判断によっては指示どおりにならないことがあります。翻訳済みキャッシュを復元した場合は、保存時の結果が表示されます。
 
 新規設定では翻訳前の確認を表示せず、新しく読み込まれた内容の翻訳とストリーミングを有効にします。新しい内容の翻訳には API の費用がかかります。各設定は変更できます。
 
@@ -25,7 +25,7 @@ Google Gemini・OpenAI・Anthropic・DeepSeek などの AI API を使ってウ�
 - **カスタム言語** — 翻訳先言語で「カスタム (言語名を入力)」を選ぶと、一覧に無い言語も名前で指定できます
 - **画面の文言の翻訳** — カスタム言語では、設定画面やポップアップ、ページ上のパネルは英語で表示されます。設定画面の「画面の文言を翻訳」を押したときだけ、現在の AI プロバイダーでその言語に翻訳します
 - **ページ構造を保持** — リンク・太字・見出しなどの書式をそのまま維持します
-- **バッチ処理 & 並列リクエスト** — 大きなページも高速に翻訳します
+- **並列リクエスト** — 翻訳単位ごとに送信します。詳細設定でフレームごとの送信ペースを RPM で指定できます（0 は間隔なし）。別のタブやフレーム、再試行は別に加わるため、API 全体の上限ではありません
 - **ページキャッシュ** — 翻訳結果を言語ごとに保存し、再訪時はポップアップから復元できます。ページ単位での削除も可能です
 - **選択範囲の翻訳** — 右クリックから翻訳し、その場で置き換えることもできます
 - **翻訳の切り替え** — 翻訳済みと原文をワンクリックで切り替えられます
@@ -92,7 +92,7 @@ Copyright (C) 2026 mame1839
 
 A Chrome extension that translates web pages in place using AI APIs — Google Gemini, OpenAI, Anthropic, DeepSeek, or any OpenAI-compatible endpoint. Supports 23 languages, plus any other language you enter by name, while preserving page structure, links, and formatting.
 
-Page translation instructs the AI to edit the text into clear Japanese that conveys substantially the same content and leads to the same understanding, decisions, and actions as the original. Pages are sent in batches, so the context available for each portion is limited. The AI may not always follow these instructions. Restored cached translations retain their saved results. New installations skip the translation prompt and enable streaming and translation of newly loaded content by default; translating new content incurs API costs. These settings can be changed.
+Page translation instructs the AI to edit the text into clear Japanese that conveys substantially the same content and leads to the same understanding, decisions, and actions as the original. Each translation unit is sent in a separate request, so the available context is limited. The AI may not always follow these instructions. Restored cached translations retain their saved results. New installations skip the translation prompt and enable streaming and translation of newly loaded content by default; translating new content incurs API costs. These settings can be changed.
 
 ### Features
 
@@ -101,7 +101,7 @@ Page translation instructs the AI to edit the text into clear Japanese that conv
 - **Custom languages** — choose **Custom (enter a language name)** under Target language to translate into a language that is not in the list
 - **Interface text translation** — with a custom language, the settings page, popup, and on-page panels are shown in English. Pressing **Translate interface text** in the settings translates them into that language with the current AI provider; nothing is sent until you press it
 - **Structure-preserving** — keeps links, bold text, headings, and layout intact
-- **Batch processing & concurrency** — translates large pages quickly
+- **Concurrent requests** — sends each translation unit separately. Advanced settings specify a per-frame pace in RPM (0 disables spacing); other tabs, frames, and retries add requests, so this is not an API-wide limit.
 - **Page cache** — saves translations per language; restore from the popup on revisit, delete per page
 - **Selection translation** — translate via the right-click menu, optionally replacing in place
 - **Toggle translations** — switch between translated and original text with one click

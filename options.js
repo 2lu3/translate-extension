@@ -48,7 +48,7 @@ const BYTE_UNITS = ['B', 'KB', 'MB', 'GB'];
 
 const NUMBER_FIELDS = {
     maxToken: { min: 1, max: 1000000, fallback: DEFAULTS.maxToken },
-    delayBetweenRequests: { min: 0, max: 3600, fallback: Math.round(DEFAULTS.delayBetweenRequests / 1000) },
+    delayBetweenRequests: { min: 0, max: 60000, fallback: 60000 / DEFAULTS.delayBetweenRequests },
     concurrencyLimit: { min: 1, max: 50, fallback: DEFAULTS.concurrencyLimit },
     maxRetries: { min: 0, max: 10, fallback: DEFAULTS.maxRetries },
     timeout: { min: 1, max: 600, fallback: DEFAULTS.timeout }
@@ -422,6 +422,11 @@ function clampInt(value, min, max, fallback) {
 
 function readNumberField(id) {
     const spec = NUMBER_FIELDS[id];
+    if (id === 'delayBetweenRequests') {
+        const value = el(id).value.trim();
+        const rpm = value === '' ? NaN : Number(value);
+        return Number.isFinite(rpm) ? Math.min(spec.max, Math.max(spec.min, rpm)) : spec.fallback;
+    }
     return clampInt(el(id).value, spec.min, spec.max, spec.fallback);
 }
 
@@ -548,7 +553,7 @@ async function saveNow() {
         deepseekReasoning: providerSettings.deepseek.reasoning,
         compatibleReasoning: providerSettings['openai-compatible'].reasoning,
         compatibleExtraParams: providerSettings['openai-compatible'].extraParams,
-        delayBetweenRequests: readNumberField('delayBetweenRequests') * 1000,
+        delayBetweenRequests: readNumberField('delayBetweenRequests') === 0 ? 0 : 60000 / readNumberField('delayBetweenRequests'),
         maxToken: readNumberField('maxToken'),
         concurrencyLimit: readNumberField('concurrencyLimit'),
         maxRetries: readNumberField('maxRetries'),
@@ -1104,7 +1109,7 @@ const resetHandlers = {
     },
     advanced: () => {
         el('maxToken').value = '';
-        el('delayBetweenRequests').value = Math.round(DEFAULTS.delayBetweenRequests / 1000);
+        el('delayBetweenRequests').value = 60000 / DEFAULTS.delayBetweenRequests;
         el('concurrencyLimit').value = DEFAULTS.concurrencyLimit;
         el('maxRetries').value = DEFAULTS.maxRetries;
         el('timeout').value = DEFAULTS.timeout;
@@ -1163,7 +1168,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         el('apiProvider').value = currentProvider;
         updateProviderUI(currentProvider);
 
-        el('delayBetweenRequests').value = Math.round((items.delayBetweenRequests ?? DEFAULTS.delayBetweenRequests) / 1000);
+        el('delayBetweenRequests').value = (items.delayBetweenRequests ?? DEFAULTS.delayBetweenRequests) === 0 ? 0 : 60000 / (items.delayBetweenRequests ?? DEFAULTS.delayBetweenRequests);
         el('maxToken').value = items.maxToken ?? '';
         el('concurrencyLimit').value = items.concurrencyLimit ?? DEFAULTS.concurrencyLimit;
         el('maxRetries').value = items.maxRetries ?? DEFAULTS.maxRetries;

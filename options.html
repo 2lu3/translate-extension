@@ -449,12 +449,12 @@
           </div>
           <div class="row">
             <div class="row-main">
-              <label class="row-label" for="delayBetweenRequests" data-i18n="optDelayLabel">Delay between requests</label>
+              <label class="row-label" for="delayBetweenRequests" data-i18n="optDelayLabel">RPM</label>
               <div class="row-desc" data-i18n="optDelayDesc"></div>
             </div>
             <div class="row-control">
-              <input type="number" id="delayBetweenRequests" min="0" max="3600" placeholder="10">
-              <span class="unit" data-i18n="optUnitSeconds"></span>
+              <input type="number" id="delayBetweenRequests" min="0" max="60000" step="any" placeholder="6">
+              <span class="unit">RPM</span>
             </div>
           </div>
           <div class="row">

@@ -8,32 +8,12 @@ async function translateTextBatch(fragmentBatch, signal, streamContext = null) {
     const target = resolveTargetLanguage(settings);
     if (!target.promptName) throw createTranslationError('targetLanguageNotSet');
 
-    const payload = {};
-    const idByKey = new Map();
-    const paragraphKeys = [];
-    fragmentBatch.forEach((tu, index) => {
-        const key = `TU_${index}`;
-        payload[key] = tu.template;
-        idByKey.set(key, tu.id);
-        if (tu.paragraph) paragraphKeys.push(key);
-    });
-    if (streamContext) streamContext.keys = new Set(idByKey.keys());
-
+    if (fragmentBatch.length !== 1) throw createTranslationError('invalidRequest', ' Expected one translation unit.');
+    const tu = fragmentBatch[0];
     const provider = (apiProvider || DEFAULTS.apiProvider).trim();
     const retryLimit = maxRetries ?? DEFAULTS.maxRetries;
-    const jsonText = JSON.stringify(payload, null, 2);
-
-    const translatedData = await translateWithProvider(provider, jsonText, retryLimit, signal, target.promptName, target.code, streamContext, paragraphKeys);
-
-    const translations = [];
-    fragmentBatch.forEach((tu, index) => {
-        const key = `TU_${index}`;
-        const translated = translatedData[key];
-        if (typeof translated === 'string') {
-            translations.push({ id: tu.id, translatedTemplate: translated });
-        }
-    });
-    return translations;
+    const translated = await translateWithProvider(provider, tu.template, retryLimit, signal, target.promptName, target.code, streamContext);
+    return [{ id: tu.id, translatedTemplate: translated }];
 }
 
 function parseTranslationResponse(responseText) {

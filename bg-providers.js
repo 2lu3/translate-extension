@@ -282,28 +282,32 @@ async function loadConfiguredProvider(provider) {
 
 async function translateWithProvider(provider, text, retryLimit, signal, targetLanguage, targetLanguageCode, streamContext = null, paragraphKeys = []) {
     const { spec, settings } = await loadConfiguredProvider(provider);
-    const prompt = createTranslationPrompt(text, paragraphKeys);
-    return requestProviderJson(spec, settings, prompt, retryLimit, signal, streamContext);
+    const prompt = createTranslationPrompt(text);
+    return requestProviderJson(spec, settings, prompt, retryLimit, signal, streamContext, false);
 }
 
-async function requestProviderJson(spec, settings, prompt, retryLimit, signal, streamContext = null) {
+async function requestProviderJson(spec, settings, prompt, retryLimit, signal, streamContext = null, json = true) {
     const actualTimeout = settings.timeout || DEFAULTS.timeout;
-    const request = spec.buildRequest(settings, prompt, settings.maxToken || DEFAULTS.maxToken, { json: true, stream: !!streamContext });
+    const request = spec.buildRequest(settings, prompt, settings.maxToken || DEFAULTS.maxToken, { json, stream: !!streamContext });
     const onHttpError = (response, data) => spec.handleHttpError(response, data, request.reasoningSent);
     if (streamContext) {
-        return performTranslation(async () => parseTranslationResponse(await streamModelResponse({
-            url: request.url,
-            headers: request.headers,
-            body: request.body,
-            timeout: actualTimeout,
-            reasoningLevel: request.reasoningLevel,
-            signal,
-            onHttpError,
-            readChunk: spec.readChunk,
-            finalizeStream: spec.finalizeStream,
-            streamContext,
-            provider: spec.name
-        })), retryLimit, signal);
+        return performTranslation(async () => {
+            const responseText = await streamModelResponse({
+                url: request.url,
+                headers: request.headers,
+                body: request.body,
+                timeout: actualTimeout,
+                reasoningLevel: request.reasoningLevel,
+                signal,
+                onHttpError,
+                readChunk: spec.readChunk,
+                finalizeStream: spec.finalizeStream,
+                streamContext,
+                provider: spec.name
+            });
+            if (!responseText) throw createTranslationError('emptyResponse');
+            return json ? parseTranslationResponse(responseText) : responseText;
+        }, retryLimit, signal);
     }
     return performTranslation(async () => {
         const { response, data } = await postProviderRequest(request, signal, actualTimeout);
@@ -311,6 +315,6 @@ async function requestProviderJson(spec, settings, prompt, retryLimit, signal, s
         recordApiUsage(spec.name, readUsageTokens(data));
         const responseText = spec.readResponseText(data);
         if (!responseText) throw createTranslationError('emptyResponse');
-        return parseTranslationResponse(responseText);
+        return json ? parseTranslationResponse(responseText) : responseText;
     }, retryLimit, signal);
 }
