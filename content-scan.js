@@ -458,24 +458,7 @@ function buildTU(block) {
 }
 
 function createBatches(tus, batchSize, maxBatchLength) {
-    const batches = [];
-    let current = [];
-    let currentLength = 0;
-    let currentCount = 0;
-    for (const tu of tus) {
-        const tuLength = tu.template.length;
-        if (current.length > 0 && (currentCount + 1 > batchSize || currentLength + tuLength > maxBatchLength)) {
-            batches.push(current);
-            current = [];
-            currentLength = 0;
-            currentCount = 0;
-        }
-        current.push({ id: tu.id, template: tu.template, paragraph: tu.block.nodeName === 'P' });
-        currentLength += tuLength;
-        currentCount += 1;
-    }
-    if (current.length > 0) batches.push(current);
-    return batches;
+    return tus.map(tu => [{ id: tu.id, template: tu.template, paragraph: tu.block.nodeName === 'P' }]);
 }
 
 function unitsNotReturned(batch, translations) {
