@@ -26,8 +26,8 @@ function isAutomaticPageTranslationAllowed() {
 }
 
 function adoptSettingSnapshot(items) {
-    autoTranslateNewContent = items.autoTranslateNewContent === true;
-    hidePromptForAllSites = items.hidePromptAllSites === true;
+    autoTranslateNewContent = items.autoTranslateNewContent !== false;
+    hidePromptForAllSites = items.hidePromptAllSites !== false;
     currentExcludeList = Array.isArray(items.excludeList) ? items.excludeList : [];
     currentRealTimeTranslation = items.realTimeTranslation === true;
     currentAlwaysTranslateList = Array.isArray(items.alwaysTranslateList) ? items.alwaysTranslateList : [];
@@ -39,8 +39,8 @@ function watchSettingChanges() {
     settingWatcherAttached = true;
     chrome.storage.onChanged.addListener((changes, area) => {
         if (area !== 'local') return;
-        if (changes.autoTranslateNewContent) autoTranslateNewContent = changes.autoTranslateNewContent.newValue === true;
-        if (changes.hidePromptAllSites) hidePromptForAllSites = changes.hidePromptAllSites.newValue === true;
+        if (changes.autoTranslateNewContent) autoTranslateNewContent = changes.autoTranslateNewContent.newValue !== false;
+        if (changes.hidePromptAllSites) hidePromptForAllSites = changes.hidePromptAllSites.newValue !== false;
         if (changes.excludeList) currentExcludeList = Array.isArray(changes.excludeList.newValue) ? changes.excludeList.newValue : [];
         if (changes.realTimeTranslation) currentRealTimeTranslation = changes.realTimeTranslation.newValue === true;
         if (changes.alwaysTranslateList) currentAlwaysTranslateList = Array.isArray(changes.alwaysTranslateList.newValue) ? changes.alwaysTranslateList.newValue : [];

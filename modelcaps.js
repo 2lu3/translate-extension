@@ -20,11 +20,11 @@ const DEFAULTS = Object.freeze({
     toggleBlueBackground: false,
     realTimeTranslation: false,
     showProgressPopup: true,
-    hidePromptAllSites: false,
+    hidePromptAllSites: true,
     showContextMenu: true,
     autoRetranslateDomain: true,
-    autoTranslateNewContent: false,
-    streamingTranslation: false
+    autoTranslateNewContent: true,
+    streamingTranslation: true
 });
 
 const ANTHROPIC_MAX_OUTPUT_TOKENS = 64000;

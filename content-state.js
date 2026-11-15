@@ -139,7 +139,7 @@ let streamingBatchRegistry = new Map();
 
 let streamingBatchCounter = 0;
 
-let streamingEnabled = false;
+let streamingEnabled = true;
 
 let streamingActive = false;
 
@@ -191,9 +191,9 @@ const POST_FINISH_MAX_SCANS = 1;
 
 const POST_FINISH_SCAN_DELAY_MS = 3000;
 
-let autoTranslateNewContent = false;
+let autoTranslateNewContent = true;
 
-let hidePromptForAllSites = false;
+let hidePromptForAllSites = true;
 
 let currentExcludeList = [];
 

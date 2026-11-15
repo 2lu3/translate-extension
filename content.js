@@ -104,7 +104,7 @@ function initTranslation() {
                     if (!IS_TOP_FRAME) return;
                     if (isCurrentUrlExcluded()) return;
                     if (languageDecision.pageIsTargetLanguage && !promptEvenIfTargetLanguage) return;
-                    if (items.hidePromptAllSites !== true) {
+                    if (items.hidePromptAllSites === false) {
                         createTranslationPrompt(false);
                     }
                 }

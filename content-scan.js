@@ -470,7 +470,7 @@ function createBatches(tus, batchSize, maxBatchLength) {
             currentLength = 0;
             currentCount = 0;
         }
-        current.push({ id: tu.id, template: tu.template });
+        current.push({ id: tu.id, template: tu.template, paragraph: tu.block.nodeName === 'P' });
         currentLength += tuLength;
         currentCount += 1;
     }
